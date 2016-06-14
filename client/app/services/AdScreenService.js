@@ -129,10 +129,10 @@ app.service('AdScreenService', function () {
     ];*/
 
     var adScreens = function () {
-        $http.get('/api/getAdScreens').success(function(data){
+        console.log('in getAdScreens');
+        return $http.post('/api/getAdScreens').then(function(data)
+        {
             return data;
-        }).error(function(data){console.log('error:' + data );
-
         });
     };
 });
