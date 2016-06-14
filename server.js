@@ -20,14 +20,15 @@ MongoClient.connect(url, function(err, db) {
     console.log("Connected to database!");
 });
 
-server.listen(8080);
+
 
 app.set('views', __dirname + '/client/views');
 app.set('view engine', 'html');
 app.engine('html', hbs.__express);
 app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
-app.use(express.static(__dirname + '/public'));
+//app.use(express.static(__dirname + '/public'));
 
 // app.use(express.cookieParser());
 // app.use(express.session({secret: 'secret', key: 'express.sid'}));
@@ -54,14 +55,14 @@ io.sockets.on('connection',function (socket)
 });
 
 // routing
-app.get('/', function(req, res) {
+/*app.get('/', function(req, res) {
     //var messages = req.session.messages;
-    /*var messagesArray = messageEngine.getMessages(collection, function (res2) {
+    /!*var messagesArray = messageEngine.getMessages(collection, function (res2) {
      res.render(__dirname + '/views/index', {title: "My Index", messages: res2});
-     });*/
-    // now with angular
+     });*!/
+});*/
 
-});
+
 
 app.get('/pages', function(req, res){
     //var messages = req.session.messages;
@@ -104,10 +105,15 @@ app.get('/TestUpdate', function(req, res) {
             res.status(500).json({"message" : "Internal server error. \n" + err});
         });
     }
-
-    app.get('/api/getAdScreens', function(req, res) {
-        messageEngine.getMessages(collection, function (result){
-            res.json(result);
-        });
-    });
 });
+
+app.get('/api/getAdScreens', function(req, res) {
+ messageEngine.getMessages(collection, function (result){
+ res.json(result);
+ })});
+
+app.get('*', function(req, res) {
+    res.sendFile(__dirname + '/client/views/AdScreenManager.html');
+});
+
+server.listen(8080);
