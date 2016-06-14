@@ -1,0 +1,17 @@
+{
+  "name": "TestForFinal",
+  "authors": [
+    "lielc <zaboolina@gmail.com>"
+  ],
+  "description": "",
+  "main": "app.js",
+  "license": "MIT",
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,114 @@
+<html>
+<head>
+<script type="text/javascript" src="jquery.js"></script>
+<!---<script type="text/javascript" src="client.js"></script>-->
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+<script >
+
+	var messagei = 0;
+	var messageRaw = '{{messages}}';
+    var MessagesArray = JSON.parse(messageRaw.replace(/&quot;/g,'"'));
+
+	var socket = io.connect('http://localhost:8080', {query: 'screenId='+window.location.href.split('screen=')[1]});
+
+	socket.on('update', function(messages){
+		MessagesArray = messages;
+		updateScreen();
+	});
+
+	function updateScreen()
+	{
+		var ms = 1000;
+		setInterval(function()
+		{
+			// always loading next message in the array..			
+			LoadMessage(messagei);
+			PromotePointerOfMessage();							
+		},ms);
+	}
+	
+	function PromotePointerOfMessage()
+	{	
+		// untill the message pointer points to the last message (which is place 4 for 5 messages)
+		if( messagei < MessagesArray.length -1)
+		{
+			messagei = messagei+1;
+		}
+		else
+		{
+			messagei = 0;
+		}		
+	}
+	
+	function ShowTexts(texts)
+	{
+		//if there are texts
+		if(texts.length > 0)
+		{
+			$( "#texts" ).html('<div><label for="name">' + texts[0] + '</label></div>');
+			
+			for(var i = 1; i < texts.length; i++)
+			{			
+				$( "#texts" ).append('<div><label for="name">' + texts[i] + '</label></div>');
+			}
+		}
+	}
+	
+	function ShowPictures(pictures)
+	{	
+		// if there are pictures
+		if( pictures.length > 0)
+		{			
+			$( "#pictures" ).html('<img src="' + pictures[0] + '"/>');
+		
+			for(var i = 1; i < pictures.length; i++)
+			{			
+				$( "#pictures" ).append('<div><img src="' + pictures[i] + '"/></div>');
+			}
+		}		
+	}
+		
+	function LoadMessage(messagei) {
+		var message = MessagesArray[messagei];
+		if (message)
+		{
+			// placing the name of the message in the title
+			$("#title").html(message.Name);
+
+			// loading texts
+			ShowTexts(message.Texts);
+
+			// loading pictures
+			ShowPictures(message.Pictures);
+
+			// loading template
+			$("#templateBody").load(message.TemplateLink);
+		}
+	}
+
+$(document).ready(function()
+{
+	// presenting first message:
+	LoadMessage(messagei);
+	PromotePointerOfMessage();
+	
+	// starting the loop.
+	updateScreen();
+  });
+</script>
+</head>
+
+<body>
+<h2>{{title}}</h2>
+</br>
+<h1 id=title></h1>
+<div id=templateBody></div>
+<div id=texts>
+</div>
+<div id=pictures>
+</div>
+</body>
+
+</html>

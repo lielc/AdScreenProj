@@ -1,0 +1,4 @@
+1. 	run RunMe.bat
+2. 	To check screen updating open a new tab on chrome and enter the following url: 
+	http://localhost:8080/TestUpdate?id=1
+3. 	watch the chrome tab that opened with RunMe.bat (on screen 1) receive a new message 
