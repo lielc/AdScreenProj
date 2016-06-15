@@ -1,7 +1,9 @@
-app.controller('AdScreensController', function ($scope, AdScreenService) {
+app.controller('AdScreensController',['$scope','AdScreenService', function ($scope, AdScreenService) {
     init();
 
     function init() {
-        $scope.adScreens = AdScreenService.getAdScreens();
+      AdScreenService.getAdScreens().then(function (results){
+            $scope.adScreens = results.messages;
+        });
     };
-});
+}]);

@@ -1,7 +1,7 @@
 var express = require('express')
     , app = express()
     , server = require('http').createServer(app)
-    , hbs = require('hbs')
+    //, hbs = require('hbs')
     , bodyParser = require('body-Parser')
     , messageEngine = require('./messages')
     , io = require('socket.io').listen(server)
@@ -12,6 +12,10 @@ var express = require('express')
 server.listen(8080);
 
 app.use('/', express.static(path.join(__dirname, '../client')));
+//app.set('view engine', 'html');
+//app.engine('html', hbs.__express);
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 //load client side
 app.get('*', function(req, res) {
@@ -35,11 +39,8 @@ MongoClient.connect(url, function(err, db) {
 
 
 
-app.set('views', __dirname + '/client/views');
-app.set('view engine', 'html');
-app.engine('html', hbs.__express);
-app.use(bodyParser.json());
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+//app.set('views', __dirname + '/client/views');
+
 
 //app.use(express.static(__dirname + '/public'));
 
@@ -115,9 +116,12 @@ app.get('/TestUpdate', function(req, res) {
     }
 });
 
-app.get('/api/getAdScreens', function(req, res) {
+app.post('/api/getAdScreens', function(req, res) {
+    console.log('getAdScreens was called');
  messageEngine.getMessages(collection, function (result){
- res.json(result);
+     console.log('json result : ' + result);
+     res.json({ status:"Susccess", messages: result });
+ //res.json(result);
  })});
 
 

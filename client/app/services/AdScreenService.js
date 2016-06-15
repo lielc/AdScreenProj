@@ -1,8 +1,33 @@
 ﻿//This handles retrieving data and is used by controllers. 3 options (server, factory, provider) with 
 //each doing the same thing just structuring the functions/data differently.
-app.service('AdScreenService', function () {
-    this.getAdScreens = function () {
-        return adScreens;
+app.factory('AdScreenService', ['$http', function($http) {
+    var factory = {};
+
+    factory.getAdScreens =  function () {
+        console.log('in getAdScreens');
+        return $http.post('/api/getAdScreens',[{}]).then(function(data)
+        {
+            console.log('the data is : ' + data.data.messages);
+            return data.data;
+        });
+    };
+    // factory function body that constructs shinyNewServiceInstance
+    return factory;
+}]);
+
+
+
+
+
+/*app.service('AdScreenService', function () {
+
+    return function ()
+    {
+        console.log('in getAdScreens');
+        this.adScreens = function(){
+            return Screens;
+
+        };
     };
 
     // this.insertCustomer = function (firstName, lastName, city) {
@@ -33,7 +58,7 @@ app.service('AdScreenService', function () {
     //     return null;
     // };
 
-/*    var adScreens = [{
+  /*  var adScreens = [{
         "id" : 1,
         "Name" : "message1",
         "Texts" : [
@@ -126,14 +151,8 @@ app.service('AdScreenService', function () {
                 3
             ]
         }
-    ];*/
+    ];
 
-    var adScreens = function () {
-        console.log('in getAdScreens');
-        return $http.post('/api/getAdScreens').then(function(data)
-        {
-            return data;
-        });
-    };
-});
+});*/
+
 
