@@ -14,7 +14,10 @@
                                 <th>Texts</th>
                                 <th>Pictures</th>
                                 <th data-ng-click="setOrder('templateLink')">Template</th>
-                                <th>Presentation Time</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Day</th>
+                                <th>Time</th>
                                 <th>Screens</th>
                             </tr>
                         </thead>
@@ -47,15 +50,25 @@
                                     {{ screen.TemplateLink | filename }}
                                 </td>
                                 <td>
+                                    {{screen.PresentationTime.startAirDate}}
+                                </td>
+                                <td>
+                                    {{screen.PresentationTime.endAirDate}}
+                                </td>
+                                <td>
                                     <table>
-                                        <tr>
-                                            <td>
-                                                from {{screen.PresentationTime.startAirDate}} to {{screen.PresentationTime.endAirDate}}
-                                            </td>
-                                        </tr>
                                         <tr ng-repeat="n in [screen.PresentationTime.presentationDays.length] | makeRange">
                                             <td>
-                                                on {{ screen.PresentationTime.presentationDays[n] | numToDay }} from {{screen.PresentationTime.AirTime[n].start }} to {{screen.PresentationTime.AirTime[n].end}}
+                                               {{ screen.PresentationTime.presentationDays[n] | numToDay }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr ng-repeat="n in [screen.PresentationTime.presentationDays.length] | makeRange">
+                                            <td>
+                                                from {{screen.PresentationTime.AirTime[n].start }} to {{screen.PresentationTime.AirTime[n].end}}
                                             </td>
                                         </tr>
                                     </table>
